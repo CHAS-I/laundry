@@ -6,7 +6,11 @@
       "target": "ESNext",
       "strict": true,
       "rootDir": "src",
-      "esModuleInterop": true
+      "esModuleInterop": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
     },
     "include": ["src"]
 }

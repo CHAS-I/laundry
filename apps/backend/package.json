@@ -20,6 +20,15 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.10",
     "ts-node-dev": "^2.0.0",
+    "ts-standard": "^12.0.2",
     "typescript": "^5.8.2"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "extends": [
+      "./node_modules/ts-standard/eslintrc.json"
+    ]
   }
 }
