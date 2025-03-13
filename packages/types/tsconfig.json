@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "declaration": true,
+      "emitDeclarationOnly": false,
+      "outDir": "./build",
+      "rootDir": "./src",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "target": "ESNext",
+      "strict": true,
+      "skipLibCheck": true
+    },
+    "include": ["src"]
+}
