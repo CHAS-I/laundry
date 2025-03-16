@@ -1,22 +1,50 @@
 import express from 'express'
-import { User, UserSchema } from '@laundry/types'
+import { PORT, SECRET_JWT_KEY } from './config'
+import { UserModel } from './models/user'
+import { errorHandler } from './middleware'
+import jwt from 'jsonwebtoken'
+import cookieParser from 'cookie-parser'
 
 const app = express()
+app.use(express.json())
+app.use(cookieParser())
 
-const port = 3000
-
-app.get('/', (_req, res) => {
-    const user: User = {
-        userName: "Hola",
-        password: "askldjflkasjdkfl"
+app.post('/', async (req, res, next) => {
+    try {
+        const result = await UserModel.create(req.body)
+        res.status(201).send(result)
+    } catch (error) {
+        next(error)
     }
-
-    const result = UserSchema.safeParse(user)
-
-    res.send(result)
+})
+app.post('/login', async (req, res, next) => {
+    try {
+        const user = await UserModel.login(req.body)
+        const token = jwt.sign(
+            { id: user.id, userName: user.userName },
+            SECRET_JWT_KEY!,
+            {
+                expiresIn: '1h'
+            }
+        )
+        res
+            .status(200)
+            .cookie('access_token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production'
+            })
+            .send(user)
+    } catch (error) {
+        next(error)
+    }
 })
 
+app.post('/logout', (_req, res) => {
+    res.clearCookie('access_token').json({ message: "Sesión cerrada exitosamente" })
+})
 
-app.listen(port, () => {
-    console.log('App listening on port 3000')
+app.use(errorHandler)
+
+app.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}`)
 })
