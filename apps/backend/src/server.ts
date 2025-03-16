@@ -1,11 +1,19 @@
 import express from 'express'
-import { PORT, SECRET_JWT_KEY } from './config'
-import { UserModel } from './models/user'
-import { errorHandler } from './middleware'
+import { PORT, SECRET_JWT_KEY } from './config.js'
+import { UserModel } from './models/user.js'
+import { errorHandler } from './middleware.js'
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 const app = express()
+app.use(cors({
+    origin: 'http://localhost:4321',
+    methods: "GET,POST",
+    allowedHeaders: "Content-Type",
+    credentials: true
+}))
+app.disable('x-powered-by')
 app.use(express.json())
 app.use(cookieParser())
 

@@ -1,0 +1,24 @@
+---
+import { LoginForm } from "./LoginForm";
+---
+
+<main class="grid lg:grid-cols-2 min-h-screen">
+    <div
+        class="hidden lg:flex relative overflow-hidden bg-gradient-to-b from-teal-500 to-blue-600 justify-center items-center"
+    >
+        <h1 class="text-6xl text-white font-semibold tracking-wide">
+            Lavanderia Arely
+        </h1>
+    </div>
+    <div class="flex items-center p-8 justify-center">
+        <div class="flex flex-col gap-10 w-[95%] lg:w-[65%]">
+            <header class="w-full flex flex-col items-center gap-2">
+                <h2 class="text-2xl font-bold">Bienvenido de nuevo</h2>
+                <span class="text-gray-400 text-center tracking-wide"
+                    >Ingresa tus credenciales para acceder al sistema</span
+                >
+            </header>
+            <LoginForm client:load />
+        </div>
+    </div>
+</main>

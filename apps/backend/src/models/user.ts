@@ -1,8 +1,8 @@
 import { User, validateUser } from "@laundry/types";
 import bcrypt from 'bcrypt'
-import { SALT_ROUNDS } from "../config";
-import { pool } from "../db";
-import { NotFoundError, ValidationError } from "../errors";
+import { SALT_ROUNDS } from "../config.js";
+import { pool } from "../db.js";
+import { NotFoundError, ValidationError } from "../errors.js";
 
 export class UserModel {
     static async create({ userName, password }: User) {
