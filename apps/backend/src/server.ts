@@ -1,7 +1,7 @@
 import express from 'express'
 import { PORT, SECRET_JWT_KEY } from './config.js'
 import { UserModel } from './models/user.js'
-import { errorHandler } from './middleware.js'
+import { errorHandler, isLoggedIn } from './middleware.js'
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
@@ -16,7 +16,7 @@ app.use(cors({
 app.disable('x-powered-by')
 app.use(express.json())
 app.use(cookieParser())
-
+app.use(isLoggedIn)
 app.post('/', async (req, res, next) => {
     try {
         const result = await UserModel.create(req.body)

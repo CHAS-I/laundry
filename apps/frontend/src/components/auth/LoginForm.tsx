@@ -22,11 +22,7 @@ export function LoginForm() {
             setErrors(result.error.flatten().fieldErrors)
             return
         }
-        console.log(JSON.stringify({
-            userName: userName.value,
-            password: password.value
-        }))
-        const user = await fetch('http://localhost:3000/login', {
+        const response = await fetch('http://localhost:3000/login', {
             method: 'POST',
             body: JSON.stringify({
                 userName: userName.value,
@@ -37,7 +33,9 @@ export function LoginForm() {
             },
             credentials: 'include'
         })
-        console.log(user)
+        // const data = await response.json()
+        // console.log(data)
+        if (response.status === 200) window.location.href = '/dashboard'
     }
 
     return (
