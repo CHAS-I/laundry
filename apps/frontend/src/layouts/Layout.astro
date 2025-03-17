@@ -1,5 +1,8 @@
 ---
 import "../styles/global.css";
+import { Waves, ChevronDown } from "lucide-react";
+import Sidebar from "../components/sidebar/Sidebar.astro";
+const { userName } = Astro.locals.user;
 ---
 
 <!doctype html>
@@ -7,12 +10,37 @@ import "../styles/global.css";
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+			rel="stylesheet"
+		/>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Laundry</title>
 	</head>
-	<body>
-		<slot />
+	<body class="flex min-h-screen w-full flex-col bg-slate-200/40">
+		<header
+			class="sticky top-0 z-30 flex justify-between h-16 items-center gap-4 border-b border-b-[#E2E8F0] bg-white px-4 md:px-6"
+		>
+			<div class="flex items-center gap-2">
+				<Waves className="h-6 w-6 text-[#00B0F0]" />
+				<span class="text-lg font-semibold">Lavanderia Arely</span>
+			</div>
+			<div
+				class="cursor-pointer inline-flex items-center justify-center text-sm font-medium transition-colors border border-[#E2E8F0] bg-white hover:bg-slate-100 h-9 rounded-md px-3 gap-2"
+			>
+				<span>{userName}</span>
+				<ChevronDown className="h-4 w-4" />
+			</div>
+		</header>
+		<div class="flex flex-1">
+			<Sidebar />
+			<main>
+				<slot />
+			</main>
+		</div>
 	</body>
 </html>
 

@@ -35,7 +35,7 @@ export function LoginForm() {
         })
         // const data = await response.json()
         // console.log(data)
-        if (response.status === 200) window.location.href = '/dashboard'
+        if (response.status === 200) window.location.href = '/'
     }
 
     return (

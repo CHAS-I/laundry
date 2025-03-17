@@ -1,0 +1,14 @@
+---
+const { link, className } = Astro.props;
+import clsx from "clsx";
+---
+
+<a
+    href={link}
+    class={clsx(
+        "flex justify-start gap-2 items-center px-3 py-2 rounded-md hover:bg-slate-100 text-sm transition-colors",
+        className,
+    )}
+>
+    <slot />
+</a>
