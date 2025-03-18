@@ -35,9 +35,9 @@ const { userName } = Astro.locals.user;
 				<ChevronDown className="h-4 w-4" />
 			</div>
 		</header>
-		<div class="flex flex-1">
+		<div class="flex flex-1 w-full">
 			<Sidebar />
-			<main>
+			<main class="p-4 md:p-6 w-full">
 				<slot />
 			</main>
 		</div>
