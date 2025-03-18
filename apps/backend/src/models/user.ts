@@ -25,8 +25,17 @@ export class UserModel {
             values: [userName, hashedPassword]
         }
 
-        return await pool.query(insertUserQuery)
+        await pool.query(insertUserQuery)
 
+        const userIdQuery = {
+            name: 'fetch-id',
+            text: 'SELECT id FROM users WHERE user_name = $1',
+            values: [userName]
+        }
+
+        const userId = await pool.query(userIdQuery)
+
+        return { id: userId.rows[0].id, message: "Usuario creado con éxito" }
     }
 
     static async login({ userName, password }: User) {

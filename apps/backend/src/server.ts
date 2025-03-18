@@ -5,6 +5,7 @@ import { errorHandler, isLoggedIn } from './middleware.js'
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import { router as employeeRouter } from './routes/employees.js'
 
 const app = express()
 app.use(cors({
@@ -17,10 +18,11 @@ app.disable('x-powered-by')
 app.use(express.json())
 app.use(cookieParser())
 app.use(isLoggedIn)
-app.post('/', async (req, res, next) => {
+app.use("/employees", employeeRouter)
+app.post('/register', async (req, res, next) => {
     try {
         const result = await UserModel.create(req.body)
-        res.status(201).send(result)
+        res.status(201).json(result)
     } catch (error) {
         next(error)
     }

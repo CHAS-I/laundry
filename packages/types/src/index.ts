@@ -22,7 +22,7 @@ export function validatePartialUser(object: any) {
 export const EmployeeSchema = z.object({
     firstName: z.string(),
     lastName: z.string(),
-    phone: z.string().min(10).max(10),
+    phoneNumber: z.string().min(10).max(10),
     userId: z.string().uuid()
 })
 
