@@ -18,3 +18,20 @@ export function validateUser(object: any) {
 export function validatePartialUser(object: any) {
     return UserSchema.partial().safeParse(object)
 }
+
+export const EmployeeSchema = z.object({
+    firstName: z.string(),
+    lastName: z.string(),
+    phone: z.string().min(10).max(10),
+    userId: z.string().uuid()
+})
+
+export type Employee = z.infer<typeof EmployeeSchema>
+
+export function validateEmployee(object: any) {
+    return EmployeeSchema.safeParse(object)
+}
+
+export function validatePartialEmployee(object: any) {
+    return EmployeeSchema.partial().safeParse(object)
+}

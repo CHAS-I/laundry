@@ -13,7 +13,6 @@ export const errorHandler: ErrorRequestHandler = (err: Error, _req: Request, res
 export const isLoggedIn = (req: Request, res: Response, next: NextFunction): void => {
     const pathname = req.path
     const token = req.cookies.access_token
-    console.log(pathname, token)
     if (!token && pathname != '/login') res.status(403).send('Access not authorized')
 
     return next()
