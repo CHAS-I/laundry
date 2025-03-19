@@ -3,20 +3,33 @@ import { NotFoundError, ValidationError } from "../errors.js";
 import { validateEmployee } from '@laundry/types'
 export class EmployeeModel {
 
+    static async employeeExists({ id }: { id: string }) {
+        const employeeQuery = {
+            name: 'fetch-employee',
+            text: 'SELECT id FROM employees WHERE id = $1',
+            values: [id]
+        }
+
+        const response = await pool.query(employeeQuery)
+
+        return response.rowCount! > 0
+    }
+
     static async findMany() {
         const query = {
             name: "fetch-all",
-            text: "SELECT e.id, first_name, last_name, phone_number, e.created_at, r.role FROM employees AS e JOIN users AS u ON e.user_id = u.id JOIN user_roles AS ur ON u.id = ur.user_id JOIN roles AS r ON ur.role_id = r.id"
+            text: "SELECT e.id, first_name, last_name, phone_number, e.created_at, r.role, u.id AS user_id FROM employees AS e JOIN users AS u ON e.user_id = u.id JOIN user_roles AS ur ON u.id = ur.user_id JOIN roles AS r ON ur.role_id = r.id"
         }
 
         const response = await pool.query(query)
 
         return response.rows
     }
+
     static async findFirst({ id }: { id: string }) {
         const query = {
             name: "fetch-one",
-            text: "SELECT e.id, first_name, last_name, phone_number, e.created_at, r.role FROM employees AS e JOIN users AS u ON e.user_id = u.id JOIN user_roles AS ur ON u.id = ur.user_id JOIN roles AS r ON ur.role_id = r.id WHERE e.id = $1",
+            text: "SELECT e.id, first_name, last_name, phone_number, e.created_at, r.role, u.id AS user_id FROM employees AS e JOIN users AS u ON e.user_id = u.id JOIN user_roles AS ur ON u.id = ur.user_id JOIN roles AS r ON ur.role_id = r.id WHERE e.id = $1",
             values: [id]
         }
         try {
@@ -32,7 +45,6 @@ export class EmployeeModel {
     }
 
     static async create({ firstName, lastName, phoneNumber, userId, roleId }: { firstName: string, lastName: string, phoneNumber: string, userId: string, roleId: string }) {
-        console.log(firstName)
         const result = validateEmployee({ firstName, lastName, phoneNumber, userId })
         if (!result.success) throw new ValidationError(JSON.stringify(result.error.flatten().fieldErrors))
 
@@ -69,6 +81,34 @@ export class EmployeeModel {
         await pool.query(employeeQuery)
         await pool.query(userRoleQuery)
 
-        return { message: "Empleado creado correctamente" }
+        const fetchNewEmployee = {
+            name: 'fetch-newEmployee',
+            text: 'SELECT id FROM employees WHERE first_name = $1',
+            values: [firstName]
+        }
+        const newEmployee = await pool.query(fetchNewEmployee)
+
+        return { id: newEmployee.rows[0].id, message: "Empleado creado correctamente" }
+    }
+
+    static async delete({ id }: { id: string }) {
+        const employee = await this.findFirst({ id })
+
+        const deleteUserQuery = {
+            name: 'delete-user',
+            text: 'DELETE FROM users WHERE id = $1',
+            values: [employee.user_id]
+        }
+
+        const deleteEmployeeQuery = {
+            name: "delete-employee",
+            text: "DELETE FROM employees WHERE id = $1",
+            values: [id]
+        }
+
+        await pool.query(deleteUserQuery)
+        await pool.query(deleteEmployeeQuery)
+
+        return { message: "Empleado eliminado correctamente" }
     }
 }

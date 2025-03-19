@@ -23,9 +23,18 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const result = await EmployeeModel.create(req.body)
-        res.status(200).json(result)
+        res.status(200).send(result)
     } catch (error) {
         console.log(error)
+        next(error)
+    }
+})
+
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const result = await EmployeeModel.delete({ id: req.params.id })
+        res.status(204).send(result)
+    } catch (error) {
         next(error)
     }
 })
